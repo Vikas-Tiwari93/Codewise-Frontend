@@ -62,6 +62,7 @@ const apiCallsWithExpiredTokens = (err: any) => {
         })
     );
   }
+  throw err;
 };
 
 APIClient.interceptors.response.use(undefined, apiCallsWithExpiredTokens);

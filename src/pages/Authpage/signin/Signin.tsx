@@ -10,10 +10,9 @@ import { useForm } from "react-hook-form";
 import Checkbox from "../../../components/common/Checkbox";
 import Buttons from "../../../components/common/Buttons";
 import { signInSchema } from "../../../constants/validationSchemas";
-import { useMutation } from "@tanstack/react-query";
 import { loginService } from "../../../services/pagesAPI/auth/apiService";
-import { setTokenkeys } from "../../../services/axios.baseservices/tokenMethods";
-import { toast } from "react-toastify";
+
+import { useMutationWhitToastAndNavigation } from "../../../hooks/reactQuery";
 type StyledSignInProps = { $theme: "light" | "dark" | undefined };
 const StyledSignIn = styled.section<StyledSignInProps>`
   position: absolute;
@@ -91,21 +90,7 @@ const StyledSignIn = styled.section<StyledSignInProps>`
 `;
 export default function Signin() {
   const navigate = useNavigate();
-  const mutation = useMutation({
-    mutationFn: loginService,
-    onSuccess: (data) => {
-      JSON.parse(data?.data)?.authToken
-        ? setTokenkeys(
-            JSON.parse(data.data).refreshToken,
-            JSON.parse(data.data).authToken
-          )
-        : null;
-      JSON.parse(data?.data)?.authToken
-        ? toast.success(JSON.parse(data.data).message)
-        : toast.error(JSON.parse(data.data).message);
-      JSON.parse(data?.data)?.authToken ? navigate("/homepage") : null;
-    },
-  });
+  const mutation = useMutationWhitToastAndNavigation(loginService, "", true);
   const { theme } = useContext(AppThemeContext);
   const {
     control,
@@ -152,7 +137,6 @@ export default function Signin() {
               name="userName"
               control={control}
               resetControl={() => reset()}
-              defaultValue={defaultValues.userName || "fghn"}
               helperText={errors.userName?.message}
             />
           </div>
@@ -163,7 +147,6 @@ export default function Signin() {
               name="password"
               type="password"
               control={control}
-              defaultValue={defaultValues.password || "fghn"}
               helperText={errors.password?.message}
             />
           </div>

@@ -18,6 +18,8 @@ import {
   sendOtpService,
 } from "../../../services/pagesAPI/auth/apiService";
 import { toast } from "react-toastify";
+import { useMutationWhitToastAndNavigation } from "../../../hooks/reactQuery";
+import { AxiosError } from "axios";
 type ForgotPasswordProps = { $theme: "light" | "dark" | undefined };
 const ForgotPassword = styled.div<ForgotPasswordProps>`
 position: absolute;
@@ -109,7 +111,7 @@ export default function ForgetPassword() {
   const [otp, setOtp] = useState("");
   const [userName, setUserName] = useState("");
   const [isAdmin, setisAdmin] = useState(false);
-  const [showChangePasword, setShowChangePassword] = useState(false);
+
   const navigate = useNavigate();
   const sendEmailMutation = useMutation({
     mutationFn: sendOtpService,
@@ -119,28 +121,27 @@ export default function ForgetPassword() {
         : toast.error(JSON.parse(data.data).message);
       setUserName(JSON.parse(data.data).result.resultSet.userName);
     },
+    onError: () => {
+      toast.error("Error occured wile sending email");
+    },
   });
 
   const validateOtpMutation = useMutation({
     mutationFn: confirmOTPservice,
     onSuccess: (data) => {
+      console.log("success");
       JSON.parse(data.data).result.isAdmin
         ? setisAdmin(true)
         : setisAdmin(false);
-      console.log(JSON.parse(data.data), isAdmin);
-      JSON.parse(data.data).result
-        ? setShowChangePassword(true)
-        : setShowChangePassword(false);
+    },
+    onError: (error: AxiosError) => {
+      toast.error(JSON.parse(error.response?.data as string).message);
     },
   });
-  const passowrdChangemutation = useMutation({
-    mutationFn: changePasswordService,
-    onSuccess: (data) => {
-      JSON.parse(data.data).result
-        ? toast.success(JSON.parse(data.data).message)
-        : toast.error(JSON.parse(data.data).message);
-    },
-  });
+  const passowrdChangemutation = useMutationWhitToastAndNavigation(
+    changePasswordService,
+    "/auth/signin"
+  );
   const {
     control,
     handleSubmit,
@@ -181,37 +182,42 @@ export default function ForgetPassword() {
           <Topography varient="h3">Go back</Topography>
         </div>
         <div className="mainForm">
-          <div className="field">
-            <Topography varient="subtitle2">Enter email</Topography>
-            <Input
-              disabled={validateOtpMutation.isSuccess}
-              varient="standard"
-              value={email}
-              label="Email"
-              name="email"
-              type="message"
-              onMessageSend={emailSend}
-              onChange={setEmail}
-            />
-          </div>
-          <div className="field">
-            <Topography varient="subtitle2">Enter OTP :</Topography>
-            <Input
-              disabled={validateOtpMutation.isSuccess}
-              varient="standard"
-              value={otp}
-              label="OTP"
-              name="otp"
-              type="message"
-              onChange={setOtp}
-              onMessageSend={verifyOTP}
-            />
-          </div>
-          {showChangePasword ? (
+          {!validateOtpMutation.isSuccess ? (
+            <div>
+              <div className="field">
+                <Topography varient="subtitle2">Enter email</Topography>
+                <Input
+                  disabled={validateOtpMutation.isSuccess}
+                  varient="standard"
+                  value={email}
+                  label="Email"
+                  name="email"
+                  type="message"
+                  onMessageSend={emailSend}
+                  onChange={setEmail}
+                />
+              </div>
+              <div className="field">
+                <Topography varient="subtitle2">Enter OTP :</Topography>
+                <Input
+                  disabled={validateOtpMutation.isSuccess}
+                  varient="standard"
+                  value={otp}
+                  label="OTP"
+                  name="otp"
+                  type="message"
+                  onChange={setOtp}
+                  onMessageSend={verifyOTP}
+                />
+              </div>
+            </div>
+          ) : null}
+          {validateOtpMutation.isSuccess ? (
             <div>
               <div className="newpassword">
                 <Topography varient="subtitle2">New password :</Topography>
                 <Input
+                  type="password"
                   label="New password"
                   name="newPassword"
                   control={control}
@@ -248,7 +254,7 @@ export default function ForgetPassword() {
             <div className="spinner">
               {(sendEmailMutation.isPending ||
                 validateOtpMutation.isPending) && (
-                <MoonLoader color={theme === "dark" ? "green" : "blue"} />
+                <MoonLoader color={theme === "dark" ? "white" : "blue"} />
               )}
             </div>
           )}

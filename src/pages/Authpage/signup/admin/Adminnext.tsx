@@ -10,9 +10,10 @@ import ImageUpload from "../../../../components/common/ImageUpload";
 import SelecterInputs from "../../../../components/common/SelecterInputs";
 import { securityQuestions } from "../../../../constants/auth";
 import Checkbox from "../../../../components/common/Checkbox";
-import { useMutation } from "@tanstack/react-query";
+
 import { SignUpasAdminService } from "../../../../services/pagesAPI/auth/apiService";
-import { toast } from "react-toastify";
+
+import { useMutationWhitToastAndNavigation } from "../../../../hooks/reactQuery";
 const StyledAdminform = styled.div`
   padding: 10px;
 
@@ -57,10 +58,10 @@ export default function Adminnext() {
   const submitfn = handleSubmit((data) => {
     const signUpData = { ...data } as Partial<AdminSignupForm>;
     console.log(signUpData);
-
     delete signUpData.gender;
     delete signUpData.DOB;
-    signUpData.organisationName = signUpData.firstName + signUpData.lastName;
+    signUpData.organisationName =
+      signUpData.firstName || "" + signUpData.lastName || "";
 
     SignupAdminMutation.mutate(signUpData);
   });
@@ -70,15 +71,11 @@ export default function Adminnext() {
     { name: "Female", value: "female" },
   ];
 
-  const SignupAdminMutation = useMutation({
-    mutationFn: SignUpasAdminService,
-    onSuccess: (data) => {
-      const message = JSON.stringify(data.data.message);
-      message === "User signed up successfully"
-        ? toast.success(message)
-        : toast.error(message);
-    },
-  });
+  const SignupAdminMutation = useMutationWhitToastAndNavigation(
+    SignUpasAdminService,
+    "/",
+    true
+  );
 
   return (
     <StyledAdminform>
