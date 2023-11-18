@@ -6,14 +6,14 @@ import Buttons from "../../../../components/common/Buttons";
 import { IoArrowBack } from "react-icons/io5";
 import Topography from "../../../../components/common/Topography";
 import styled from "styled-components";
-import ImageUpload from "../../../../components/common/ImageUpload";
+import ProfileImage from "../../../../components/common/Image";
 import SelecterInputs from "../../../../components/common/SelecterInputs";
 import { securityQuestions } from "../../../../constants/auth";
 import Checkbox from "../../../../components/common/Checkbox";
 
 import { SignUpasAdminService } from "../../../../services/pagesAPI/auth/apiService";
 
-import { useMutationWhitToastAndNavigation } from "../../../../hooks/reactQuery";
+import { useMutationWhitToast } from "../../../../hooks/reactQuery";
 const StyledAdminform = styled.div`
   padding: 10px;
 
@@ -71,9 +71,9 @@ export default function Adminnext() {
     { name: "Female", value: "female" },
   ];
 
-  const SignupAdminMutation = useMutationWhitToastAndNavigation(
+  const SignupAdminMutation = useMutationWhitToast(
     SignUpasAdminService,
-    "/",
+    { onSuccess: () => navigate("/") },
     true
   );
 
@@ -88,7 +88,8 @@ export default function Adminnext() {
         <IoArrowBack size={19} /> <Topography varient="h3">Go back</Topography>
       </div>
       <div className="imageContainer">
-        <ImageUpload
+        <ProfileImage
+          type="upload"
           width="100px"
           height="100px"
           isCircle={true}

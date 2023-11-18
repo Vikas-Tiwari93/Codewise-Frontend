@@ -81,8 +81,9 @@ const StyledTopography = styled.div<StyledTopographyProps>`
   text-align: ${(props) => props.$align};
   overflow: hidden;
   color: ${(props) => (props.$textColor ? props.$textColor : "inherit")};
+  width: ${(props) => (props.$textEllipses ? "100%" : "auto")};
   white-space: ${(props) => (props.$textEllipses ? "nowrap" : "wrap")};
-  text-overflow: ${(props) => (props.$textEllipses ? "ellipses" : "initial")};
+  text-overflow: ${(props) => (props.$textEllipses ? "ellipsis" : "initial")};
   padding: ${(props) =>
     props.$varient ? varientStyle[props.$varient].padding : "2px"};
   margin-top: ${(props) =>
@@ -102,7 +103,7 @@ const StyledTopography = styled.div<StyledTopographyProps>`
     props.$textDecoration && props.$textLineStyle
       ? textDecorationLine[props.$textLineStyle][props.$textDecoration]
       : "none"};
-  display: flex;
+  display: ${(props) => (props.$textEllipses ? "inline-block" : "flex")};
   justify-content: space-between;
   align-items: center;
 `;

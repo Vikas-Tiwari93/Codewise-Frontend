@@ -1,21 +1,23 @@
-import { useMutation, MutationFunction } from "@tanstack/react-query";
+import {
+  useMutation,
+  MutationFunction,
+  MutationOptions,
+} from "@tanstack/react-query";
 import { setTokenkeys } from "../services/axios.baseservices/tokenMethods";
 import { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
-export const useMutationWhitToastAndNavigation = <T, D>(
+export const useMutationWhitToast = <T, D>(
   mutationFn: MutationFunction<AxiosResponse<T, D>, D>,
-  navigation?: string,
-  isAuth?: boolean
+  option?: MutationOptions<AxiosResponse<T, D>>,
+  Authset?: boolean
 ) => {
-  const navigate = useNavigate();
   return useMutation({
     mutationFn,
 
-    onSuccess: (data: AxiosResponse<T, D>) => {
+    onSuccess: (data: AxiosResponse<T, D>, variables: D, context: unknown) => {
       if (data.data) {
-        isAuth
+        Authset
           ? setTokenkeys(
               JSON.parse(data.data as string).refreshToken,
               JSON.parse(data.data as string).authToken
@@ -23,8 +25,7 @@ export const useMutationWhitToastAndNavigation = <T, D>(
           : null;
 
         toast.success(JSON.parse(data.data as string).message);
-
-        navigation ? navigate(navigation) : null;
+        option?.onSuccess?.(data, variables as void, context);
       }
     },
     onError: (error: AxiosError<T, D>) => {

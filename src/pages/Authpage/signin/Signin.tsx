@@ -12,7 +12,8 @@ import Buttons from "../../../components/common/Buttons";
 import { signInSchema } from "../../../constants/validationSchemas";
 import { loginService } from "../../../services/pagesAPI/auth/apiService";
 
-import { useMutationWhitToastAndNavigation } from "../../../hooks/reactQuery";
+import { useMutationWhitToast } from "../../../hooks/reactQuery";
+
 type StyledSignInProps = { $theme: "light" | "dark" | undefined };
 const StyledSignIn = styled.section<StyledSignInProps>`
   position: absolute;
@@ -90,7 +91,18 @@ const StyledSignIn = styled.section<StyledSignInProps>`
 `;
 export default function Signin() {
   const navigate = useNavigate();
-  const mutation = useMutationWhitToastAndNavigation(loginService, "", true);
+
+  const mutation = useMutationWhitToast(
+    loginService,
+    {
+      onSuccess: (data) => {
+        console.log("wtf");
+        const isAdmin = JSON.parse(data?.data as string).isAdmin;
+        isAdmin ? navigate("/admin/homepage") : navigate("/student/homepage");
+      },
+    },
+    true
+  );
   const { theme } = useContext(AppThemeContext);
   const {
     control,

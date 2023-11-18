@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import CheckAuth from "../components/AuthFunction/CheckAuth";
-import Homepage from "../pages/Homepage/Homepage";
+import Homepage from "../pages/Admin/Homepage";
 import { Navigate } from "react-router-dom";
 
 import Authpage from "../pages/Authpage/Authpage";
@@ -15,6 +15,7 @@ import Admin from "../pages/Authpage/signup/admin/Admin";
 import Select from "../pages/Authpage/signup/select/Select";
 import Studentnext from "../pages/Authpage/signup/student/Studentnext";
 import Adminnext from "../pages/Authpage/signup/admin/Adminnext";
+import AdminOverview from "../pages/Admin/admin-overview/AdminOverview";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -32,12 +33,19 @@ const routes = createBrowserRouter([
   },
 
   {
-    path: "/homepage",
+    path: "/admin/homepage",
     element: (
       <CheckAuth>
         <Homepage />
       </CheckAuth>
     ),
+    children: [
+      {
+        path: "overview",
+
+        element: <AdminOverview />,
+      },
+    ],
   },
   {
     path: "/auth",

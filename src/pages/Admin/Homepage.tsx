@@ -1,34 +1,35 @@
 import { useContext } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
-
+import { Outlet } from "react-router-dom";
+import styled from "styled-components";
 import { AppThemeContext } from "../../themes/ThemeProvider";
+import Topography from "../../components/common/Topography";
 
 import Checkbox from "../../components/common/Checkbox";
-import styled from "styled-components";
-import Topography from "../../components/common/Topography";
-import Buttons from "../../components/common/Buttons";
+import ImageWithDropdown from "../../components/common/ImageWithDropdown";
 
 type StyledAuthHead = {
   $theme: "light" | "dark" | undefined;
 };
-const AuthBody = styled.div`
+type StyledAuthBody = {
+  $theme: "light" | "dark" | undefined;
+};
+
+const AuthBody = styled.div<StyledAuthBody>`
   box-shadow: 2px 2px 2px 2px grey;
   border-radius: 5px;
-  padding: 30px;
+  border: ${(props) =>
+    props.$theme === "light" ? "1px solid grey" : "1px solid grey"};
+  padding: 10px;
   width: 95vw;
-  height: 95vh;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  & img {
-    border-radius: 35%;
-    opacity: 0.7;
-    width: 370px;
-  }
 `;
+
 const AuthHead = styled.div<StyledAuthHead>`
-  position: fixed;
+  position: sticky;
   top: 0px;
   backdrop-filter: blur(12px);
   padding: 4px 14px;
@@ -40,38 +41,25 @@ const AuthHead = styled.div<StyledAuthHead>`
   justify-content: space-between;
   align-items: center;
   box-shadow: 2px 2px 2px 2px silver;
-  & div {
+  & .rightHeader {
     display: flex;
     gap: 10px;
     align-items: center;
     justify-content: center;
   }
 `;
-
-export default function Authpage() {
-  const navigate = useNavigate();
+export default function Homepage() {
   const { theme, changeTheme } = useContext(AppThemeContext);
-  const signUphandleClick = () => {
-    navigate("/auth/signup/select");
-  };
-  const signInhandleClick = () => {
-    navigate("/auth/signin");
-  };
+  const options = [
+    { name: "vikas", render: () => "wtf are u doing" },
+    { name: "vikas", render: () => "wtf are u doing" },
+    { name: "vikas", render: () => "wtf are u doing" },
+  ];
   return (
-    <div>
+    <>
       <AuthHead $theme={theme}>
         <Topography varient="h2">CodeWise</Topography>
-        <div>
-          <Buttons
-            title={"Signin"}
-            width="medium"
-            onClick={() => signInhandleClick()}
-          />
-          <Buttons
-            title={"Signup"}
-            width="medium"
-            onClick={() => signUphandleClick()}
-          />
+        <div className="rightHeader">
           <Topography varient="subtitle2">Dark Theme</Topography>
           <span>
             <Checkbox
@@ -85,15 +73,12 @@ export default function Authpage() {
               }}
             />
           </span>
+          <ImageWithDropdown optionsArray={options} />
         </div>
       </AuthHead>
-      <AuthBody>
-        <img src="/images/logo.png" alt="" />
-        <Topography varient="subtitle2">Wating for user to signIn</Topography>
-      </AuthBody>
-      <div>
+      <AuthBody $theme={theme}>
         <Outlet />
-      </div>
-    </div>
+      </AuthBody>
+    </>
   );
 }

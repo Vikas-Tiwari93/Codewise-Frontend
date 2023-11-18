@@ -12,3 +12,21 @@ body{
 
     
 }
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #afadad;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(98, 97, 97);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(98, 97, 97);
+  border-radius: 10px;
+}

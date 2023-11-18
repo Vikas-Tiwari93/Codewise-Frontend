@@ -6,7 +6,7 @@ import { ContextType } from "../Signup";
 import Checkbox from "../../../../components/common/Checkbox";
 import Topography from "../../../../components/common/Topography";
 import SelecterInputs from "../../../../components/common/SelecterInputs";
-import ImageUpload from "../../../../components/common/ImageUpload";
+import ProfileImage from "../../../../components/common/Image";
 import { IoArrowBack } from "react-icons/io5";
 import styled from "styled-components";
 import { securityQuestions } from "../../../../constants/auth";
@@ -68,7 +68,8 @@ export default function Studentnext() {
         <IoArrowBack size={19} /> <Topography varient="h3">Go back</Topography>
       </div>
       <div className="imageContainer">
-        <ImageUpload
+        <ProfileImage
+          type="upload"
           width="100px"
           height="100px"
           isCircle={true}

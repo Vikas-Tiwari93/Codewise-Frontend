@@ -18,7 +18,7 @@ import {
   sendOtpService,
 } from "../../../services/pagesAPI/auth/apiService";
 import { toast } from "react-toastify";
-import { useMutationWhitToastAndNavigation } from "../../../hooks/reactQuery";
+import { useMutationWhitToast } from "../../../hooks/reactQuery";
 import { AxiosError } from "axios";
 type ForgotPasswordProps = { $theme: "light" | "dark" | undefined };
 const ForgotPassword = styled.div<ForgotPasswordProps>`
@@ -138,10 +138,11 @@ export default function ForgetPassword() {
       toast.error(JSON.parse(error.response?.data as string).message);
     },
   });
-  const passowrdChangemutation = useMutationWhitToastAndNavigation(
-    changePasswordService,
-    "/auth/signin"
-  );
+  const passowrdChangemutation = useMutationWhitToast(changePasswordService, {
+    onSuccess: () => {
+      navigate("/auth/signin");
+    },
+  });
   const {
     control,
     handleSubmit,
