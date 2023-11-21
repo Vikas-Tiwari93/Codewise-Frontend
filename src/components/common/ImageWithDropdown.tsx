@@ -59,6 +59,7 @@ export default function ImageWithDropdown({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const handleDropdown = () => {
+    console.log("wtf");
     setIsDropdownOpen(!isDropdownOpen);
   };
 
@@ -79,35 +80,29 @@ export default function ImageWithDropdown({
     };
   }, []);
   return (
-    <ImageDropdown
-      onClick={() => handleDropdown()}
-      $isDropdownOpen={isDropdownOpen}
-    >
-      <ProfileImage
-        type="download"
-        width="42px"
-        height="42px"
-        isCircle={true}
-        name="image"
-      />
-      {
-        <div
-          className={isDropdownOpen ? "dropdown" : "nodropdown"}
-          ref={dropdownRef}
-        >
-          {optionsArray.map((elm) => {
-            return (
-              <div
-                className="options"
-                key={elm.name}
-                onClick={() => setIsDropdownOpen(false)}
-              >
-                {elm.render()}
-              </div>
-            );
-          })}
-        </div>
-      }
+    <ImageDropdown $isDropdownOpen={isDropdownOpen}>
+      <span onClick={() => handleDropdown()}>
+        <ProfileImage
+          type="download"
+          width="42px"
+          height="42px"
+          isCircle={true}
+          name="image"
+        />
+      </span>
+
+      <div
+        className={isDropdownOpen ? "dropdown" : "nodropdown"}
+        ref={dropdownRef}
+      >
+        {optionsArray.map((elm) => {
+          return (
+            <div className="options" key={elm.name} onClick={() => {}}>
+              {elm.render()}
+            </div>
+          );
+        })}
+      </div>
     </ImageDropdown>
   );
 }

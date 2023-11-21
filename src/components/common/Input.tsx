@@ -16,6 +16,7 @@ type InputElmProps = {
   value?: string;
   resetControl?: () => void;
   onChange?: (value: string) => void;
+  onReset?: () => void;
   defaultValue?: string;
   fullwidth?: boolean;
   control?: unknown;
@@ -154,6 +155,7 @@ export default function Input({
   onMessageSend,
   value,
   onChange,
+  onReset,
   defaultValue,
   disabled = false,
   helperText = "",
@@ -198,7 +200,7 @@ export default function Input({
               defaultValue={defaultValue || ""}
               onFocus={() => setIsOnFocus(true)}
               onBlur={() => setIsOnFocus(false)}
-              value={control ? fieldValues || "" : value || defaultValue || ""}
+              value={control ? fieldValues : value || defaultValue || ""}
               placeholder={!isOnFocus ? label : ""}
               onChange={(e) => handleChangeInput(e, controlChange)}
             />
@@ -212,7 +214,9 @@ export default function Input({
               />
             )}
             {type === "text" && (
-              <MdClose onClick={resetControl ? () => resetControl() : null} />
+              <MdClose
+                onClick={resetControl ? () => resetControl() : onReset}
+              />
             )}
           </>
         ) : (

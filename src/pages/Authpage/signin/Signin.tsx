@@ -98,7 +98,9 @@ export default function Signin() {
       onSuccess: (data) => {
         console.log("wtf");
         const isAdmin = JSON.parse(data?.data as string).isAdmin;
-        isAdmin ? navigate("/admin/homepage") : navigate("/student/homepage");
+        isAdmin
+          ? navigate("/admin/homepage/dashboard")
+          : navigate("/student/homepage");
       },
     },
     true

@@ -15,7 +15,10 @@ import Admin from "../pages/Authpage/signup/admin/Admin";
 import Select from "../pages/Authpage/signup/select/Select";
 import Studentnext from "../pages/Authpage/signup/student/Studentnext";
 import Adminnext from "../pages/Authpage/signup/admin/Adminnext";
-import AdminOverview from "../pages/Admin/admin-overview/AdminOverview";
+import Dashboard from "../pages/Admin/admin-overview/Dashboard";
+import Classes from "../pages/Admin/admin-overview/Classes";
+import Assignments from "../pages/Admin/admin-overview/Assignments";
+import Topics from "../pages/Admin/admin-overview/Topics";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -41,9 +44,23 @@ const routes = createBrowserRouter([
     ),
     children: [
       {
-        path: "overview",
+        path: "dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "classes",
 
-        element: <AdminOverview />,
+        element: <Classes />,
+      },
+      {
+        path: "assignments",
+
+        element: <Assignments />,
+      },
+      {
+        path: "topics",
+
+        element: <Topics />,
       },
     ],
   },

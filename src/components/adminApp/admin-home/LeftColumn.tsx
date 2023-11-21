@@ -20,11 +20,12 @@ type LeftColumn = {
 const AsideMain = styled.div<LeftColumn>`
   height: 100%;
   border: 1px solid silver;
-  display: flex;
+  display: inline-flex;
   border-radius: 0.7rem;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 250px;
 
   & .profile {
     padding: 10px;
@@ -38,6 +39,7 @@ const AsideMain = styled.div<LeftColumn>`
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: 320px;
     overflow-y: scroll;
   }
 

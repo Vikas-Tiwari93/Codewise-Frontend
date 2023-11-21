@@ -6,6 +6,8 @@ import Topography from "../../components/common/Topography";
 
 import Checkbox from "../../components/common/Checkbox";
 import ImageWithDropdown from "../../components/common/ImageWithDropdown";
+import LeftColumn from "../../components/adminApp/admin-home/LeftColumn";
+import AdminNavbar from "../../components/adminApp/admin-home/AdminNavbar";
 
 type StyledAuthHead = {
   $theme: "light" | "dark" | undefined;
@@ -48,6 +50,20 @@ const AuthHead = styled.div<StyledAuthHead>`
     justify-content: center;
   }
 `;
+const Divmain = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 4px;
+  margin: 10px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  .overviewbody {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+`;
 export default function Homepage() {
   const { theme, changeTheme } = useContext(AppThemeContext);
   const options = [
@@ -77,7 +93,13 @@ export default function Homepage() {
         </div>
       </AuthHead>
       <AuthBody $theme={theme}>
-        <Outlet />
+        <Divmain>
+          <LeftColumn />
+          <div className="overviewbody">
+            <AdminNavbar />
+            <Outlet />
+          </div>
+        </Divmain>
       </AuthBody>
     </>
   );
